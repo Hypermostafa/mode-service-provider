@@ -1,0 +1,44 @@
+import 'package:dio/dio.dart';
+import 'package:flutter_application_14/models/account.dart';
+
+class AuthService {
+  static final Dio dio = Dio();
+
+  static Future<AccountResponse> login(String email, String password) async {
+    try {
+      Response response = await dio.post(
+        "https://elsewedyteam.runasp.net/api/Login/CheckUser",
+        data: {"email": email, "password": password},
+      );
+
+      return AccountResponse.fromJson(response.data);
+    } on DioException catch (dioError) {
+    } catch (othererror) {
+      throw Exception(othererror);
+    }
+  }
+
+  static Future<AccountResponse> signup(
+    String name,
+    String phone,
+    String email,
+    String password,
+  ) async {
+    try {
+      Response response = await dio.post(
+        "https://elsewedyteam.runasp.net/api/Register/AddUser",
+        data: {
+          "email": email,
+          "password": password,
+          "phone": phone,
+          "name": name,
+        },
+      );
+
+      return AccountResponse.fromJson(response.data);
+    } on DioException catch (dioError) {
+    } catch (othererror) {
+      throw Exception(othererror);
+    }
+  }
+}
